@@ -1,0 +1,196 @@
+﻿@page "/order/add"
+@page "/order/edit/{orderId:int}"
+@using Order_App2.Shared.Entities
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h1>@Title Order</h1>
+<hr />
+
+<EditForm Model="@order" OnValidSubmit="SaveOrder">
+    <DataAnnotationsValidator />
+
+    <div class="row">
+        <div class="mb-3 col-md-6">
+            <label for="Name" class="form-label">Name</label>
+            <div class="col-md-12">
+                <InputText class="form-control" @bind-Value="order.Name" />
+                <ValidationMessage For="@(() => order.Name)" />
+            </div>
+        </div>
+
+        <div class="mb-3 col-md-6">
+            <label for="State" class="form-label">State</label>
+            <div class="col-md-12">
+                <InputText class="form-control" @bind-Value="order.State" />
+                <ValidationMessage For="@(() => order.State)" />
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <h4>Windows</h4>
+        @if (order.Windows != null)
+        {
+            @foreach (var window in order.Windows)
+            {
+                window.TotalSubElements = window.SubElements.Count();
+
+                <div class="border p-3 mb-3">
+                    <h5>Window Details</h5>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="windowName">Window Name:</label>
+                                <InputText id="windowName" @bind-Value="window.Name" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="QuantityOfWindows">Quantity Of Windows:</label>
+                                <InputNumber id="QuantityOfWindows" @bind-Value="window.QuantityOfWindows" class="form-control" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="TotalSubElements">Total SubElements:</label>
+                                <InputNumber id="TotalSubElements" @bind-Value="window.TotalSubElements" class="form-control" disabled />
+
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <h6>SubElements</h6>
+                    @if (window.SubElements != null)
+                    {
+                        @*@foreach (var subElement in window.SubElements)*@
+                        @foreach (var (subElement, index) in window.SubElements.Select((value, index) => (value, index)))
+                        {
+                            subElement.Element = @index + 1;
+                            <div class="border p-2 mb-2">
+                                <div class="row">
+                                    <div class="col-md-1">
+                                        <label for="elementType">Element:</label>
+                                        <InputNumber id="elementType" @bind-Value="subElement.Element" class="form-control" disabled />
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="elementType">Element Type:</label>
+                                        <InputText id="elementType" @bind-Value="subElement.Type" class="form-control" />
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label for="elementWidth">Element Width:</label>
+                                        <InputNumber id="elementWidth" @bind-Value="subElement.Width" class="form-control" />
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label for="elementHeight">Element Height:</label>
+                                        <InputNumber id="elementHeight" @bind-Value="subElement.Height" class="form-control" />
+                                    </div>
+                                    <div class="col-md-1">
+                                        <label for="elementHeight">Delete</label>
+                                        <button type="button" @onclick="(Action)(() => RemoveSubElement(window, subElement))" class="btn btn-danger">Remove</button>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        }
+                    }
+
+
+                    <button type="button" @onclick="(Action)(() => AddSubElement(window))" class="btn btn-secondary">Add SubElement</button>
+                    <div class="row mt-2">
+                        <div class="col-md-12 text-end">
+                            <button type="button" @onclick="(Action)(() => RemoveWindow(window))" class="btn btn-danger">Delete Window</button>
+                        </div>
+                    </div>
+                </div>
+
+                
+
+            }
+        }
+        <button type="button" @onclick="(Action)AddWindow" class="btn btn-primary">Add Window</button>
+    </div>
+
+    <div class="form-group mt-3">
+        <button type="submit" class="btn btn-success">@ButtonTitle</button>
+        <button type="button" class="btn btn-light" @onclick="Cancel">Cancel</button>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter] public int orderId { get; set; }
+    protected string Title = "Add";
+    protected string ButtonTitle = "Save";
+    protected Order order = new();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (orderId != 0)
+        {
+            Title = "Edit";
+            ButtonTitle = "Update";
+            var response = await Http.GetFromJsonAsync<Order>($"api/Order/{orderId}");
+            order = response ?? new Order();
+        }
+    }
+
+    protected async Task SaveOrder()
+    {
+        try
+        {
+            if (order.OrderId != 0) { await Http.PutAsJsonAsync("api/Order", order); }
+            else { await Http.PostAsJsonAsync("api/Order", order); }
+            Cancel();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Exception: {ex.Message}");
+        }
+    }
+
+    void Cancel() => NavigationManager.NavigateTo("/fetchorderdetails");
+
+    //void AddWindow()
+    //{
+    //    if (order.Windows == null) { order.Windows = new List<Window>(); }
+    //    order.Windows.Add(new Window());
+    //}
+    void AddWindow()
+    {
+        if (order.Windows == null) { order.Windows = new List<Window>(); }
+        var newWindow = new Window { SubElements = new List<SubElement>() };
+        order.Windows.Add(newWindow);
+    }
+
+
+    void AddSubElement(Window window)
+    {
+        if (window.SubElements == null) { window.SubElements = new List<SubElement>(); }
+        window.SubElements.Add(new SubElement());
+    }
+    void RemoveSubElement(Window window, SubElement subElement)
+    {
+        if (window.SubElements != null)
+        {
+            window.SubElements.Remove(subElement);
+        }
+    }
+    void RemoveWindow(Window window)
+    {
+        if (order.Windows != null)
+        {
+            order.Windows.Remove(window);
+        }
+    }
+
+}

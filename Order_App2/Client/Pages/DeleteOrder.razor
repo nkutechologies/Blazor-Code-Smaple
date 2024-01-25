@@ -1,0 +1,49 @@
+﻿@page "/order/delete/{OrderId:int}"
+@using Order_App2.Shared.Entities
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h2>Delete Order</h2>
+<br />
+
+<div class="form-group">
+    <h4>Do you want to delete this order?</h4>
+    <table class="table">
+        <tbody>
+            <tr>
+                <td>Name</td>
+                <td>@order.Name</td>
+            </tr>
+            <tr>
+                <td>Address</td>
+                <td>@order.State</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="form-group">
+    <input type="submit" value="Delete" @onclick="RemoveOrder" class="btn btn-danger" />
+    <input type="submit" value="Cancel" @onclick="Cancel" class="btn btn-warning" />
+</div>
+
+@code {
+    [Parameter]
+    public int OrderId { get; set; }
+    Order order = new Order();
+
+    protected override async Task OnInitializedAsync()
+    {
+        order = await Http.GetFromJsonAsync<Order>($"api/Order/{OrderId}");
+    }
+
+    protected async Task RemoveOrder()
+    {
+        await Http.DeleteAsync($"api/Order/{OrderId}");
+        NavigationManager.NavigateTo("/fetchorderdetails");
+    }
+
+    void Cancel()
+    {
+        NavigationManager.NavigateTo("/fetchorderdetails");
+    }
+}

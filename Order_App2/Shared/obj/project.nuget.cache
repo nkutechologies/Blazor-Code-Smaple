@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "pbc25W0DiDFGyHaNEpsZ7ZUYA669dOLrcN5DLfypZBbHlo5qFw4vtLSQo64CGpV8D2ypbg7tGvJfIdAdZSil7Q==",
+  "success": true,
+  "projectFilePath": "/Users/abdulmateen/Projects/Order_App2/Order_App2/Shared/Order_App2.Shared.csproj",
+  "expectedPackageFiles": [
+    "/Users/abdulmateen/.nuget/packages/microsoft.netcore.app.ref/7.0.14/microsoft.netcore.app.ref.7.0.14.nupkg.sha512",
+    "/Users/abdulmateen/.nuget/packages/microsoft.aspnetcore.app.ref/7.0.14/microsoft.aspnetcore.app.ref.7.0.14.nupkg.sha512"
+  ],
+  "logs": []
+}

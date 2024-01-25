@@ -1,0 +1,11 @@
+/Users/abdulmateen/Projects/Order_App2/Order_App2/Shared/bin/Debug/net7.0/Order_App2.Shared.deps.json
+/Users/abdulmateen/Projects/Order_App2/Order_App2/Shared/bin/Debug/net7.0/Order_App2.Shared.dll
+/Users/abdulmateen/Projects/Order_App2/Order_App2/Shared/bin/Debug/net7.0/Order_App2.Shared.pdb
+/Users/abdulmateen/Projects/Order_App2/Order_App2/Shared/obj/Debug/net7.0/Order_App2.Shared.GeneratedMSBuildEditorConfig.editorconfig
+/Users/abdulmateen/Projects/Order_App2/Order_App2/Shared/obj/Debug/net7.0/Order_App2.Shared.AssemblyInfoInputs.cache
+/Users/abdulmateen/Projects/Order_App2/Order_App2/Shared/obj/Debug/net7.0/Order_App2.Shared.AssemblyInfo.cs
+/Users/abdulmateen/Projects/Order_App2/Order_App2/Shared/obj/Debug/net7.0/Order_App2.Shared.csproj.CoreCompileInputs.cache
+/Users/abdulmateen/Projects/Order_App2/Order_App2/Shared/obj/Debug/net7.0/Order_App2.Shared.dll
+/Users/abdulmateen/Projects/Order_App2/Order_App2/Shared/obj/Debug/net7.0/refint/Order_App2.Shared.dll
+/Users/abdulmateen/Projects/Order_App2/Order_App2/Shared/obj/Debug/net7.0/Order_App2.Shared.pdb
+/Users/abdulmateen/Projects/Order_App2/Order_App2/Shared/obj/Debug/net7.0/ref/Order_App2.Shared.dll
